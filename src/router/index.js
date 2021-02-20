@@ -6,6 +6,11 @@ Vue.use(VueRouter)
 
 const routes = [
   {
+    path: '/',
+    name: 'CalendarMonth',
+    component: () => import('../views/CalendarMonth.vue')
+  },
+  {
     path: '*',
     name: 'NotFound',
     component: NotFound
