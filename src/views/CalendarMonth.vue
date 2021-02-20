@@ -1,10 +1,6 @@
 <template>
   <div class="calendar-month">
     <div class="calendar-month-header">
-      <SelectedMonth
-        :selected-date="selectedDate"
-        class="selected-month"
-      />
       <CalendarDateSelector
         :current-date="today"
         :selected-date="selectedDate"
@@ -12,41 +8,27 @@
       />
     </div>
 
-    <!-- Mon to Sun -->
-    <CalendarWeekdays />
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+          <SelectedMonth :selected-date="selectedDate" class="selected-month" />
+          <CalendarWeekdays />
+          <!-- selected month -->
+          <CalendarMonthDayItem :show-date="selectedDate" />
+        </div>
 
-    <!-- selected month -->
-    <CalendarMonthDayItem
-      :show-date="selectedDate"
-    />
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3"
+        v-for="count in countOfUpcommingDate"
+        :key="count"
+        >
+          <SelectedMonth :selected-date="upcommingDate(count)" class="upcomming-month" />
+          <CalendarWeekdays />
+          <!-- selected month -->
+          <CalendarMonthDayItem :show-date="upcommingDate(count)" />
+        </div>
 
-    <!-- upcomming month -->
-    <SelectedMonth
-        :selected-date="upcommingDate(1)"
-        class="upcomming-month"
-      />
-    <CalendarMonthDayItem
-      :show-date="upcommingDate(1)"
-    />
-     <SelectedMonth
-        :selected-date="upcommingDate(2)"
-        class="upcomming-month"
-        v-if="viewport > 700"
-      />
-    <CalendarMonthDayItem
-      :show-date="upcommingDate(2)"
-      v-if="viewport > 700"
-    />
-     <SelectedMonth
-        :selected-date="upcommingDate(3)"
-        class="upcomming-month"
-        v-if="viewport > 1000"
-      />
-    <CalendarMonthDayItem
-      :show-date="upcommingDate(3)"
-      v-if="viewport > 1000"
-    />
-
+      </div>
+    </div>
   </div>
 </template>
 
@@ -69,7 +51,7 @@ export default {
     return {
       selectedDate: dayjs(),
       today: dayjs().format("YYYY-MM-DD"),
-      viewport: window.innerWidth
+      countOfUpcommingDate: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
     };
   },
   methods: {
@@ -77,15 +59,8 @@ export default {
       this.selectedDate = newSelectedDate;
     },
     upcommingDate(count) {
-      return this.selectedDate.add(count, "month")
+      return this.selectedDate.add(count, "month");
     },
-    updateViewport() {
-      this.viewport = window.innerWidth
-      return this.viewport
-    }
   },
-  created() {
-    window.addEventListener('resize', this.updateViewport)
-  }
 };
 </script>
