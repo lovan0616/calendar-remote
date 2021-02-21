@@ -3,14 +3,18 @@
     <li
       class="calendar-day"
       :class="{
-      'calendar-day--not-current':!isCurrentMonth,
+      'calendar-day--not-current':!day.isCurrentMonth,
       'calendar-day-today':isToday
     }"
-    v-for="day in days"
-    :key="day.date"
-
+      v-for="day in days"
+      :key="day.date"
     >
-      <span>{{ day.date | dayFormat() }}</span>
+      <router-link :to="{
+      name: 'calendar-day',
+      params: {date: day.date}
+    }">
+        <span>{{ day.date | dayFormat() }}</span>
+      </router-link>
     </li>
   </ol>
 </template>
@@ -22,17 +26,12 @@ import weekOfYear from "dayjs/plugin/weekOfYear";
 dayjs.extend(weekday);
 dayjs.extend(weekOfYear);
 
-
 export default {
   name: "CalendarMonthDayItem",
   props: {
     showDate: {
       type: Object,
       required: true
-    },
-    isCurrentMonth: {
-      type: Boolean,
-      default: false
     },
     isToday: {
       type: Boolean,
@@ -41,7 +40,7 @@ export default {
   },
   filters: {
     dayFormat(date) {
-      return dayjs(date).format('D')
+      return dayjs(date).format("D");
     }
   },
   computed: {
@@ -119,7 +118,7 @@ export default {
         ...this.previousMonthDays,
         ...this.currentMonthDays,
         ...this.nextMonthDays
-        ];
+      ];
     }
   },
   methods: {
@@ -131,8 +130,23 @@ export default {
 </script>
 
 <style scoped>
+a {
+  color: inherit
+}
+.days-grid {
+  border: 1px solid red;
+}
+
 .calendar-day {
   list-style: none;
   width: calc(100% / 7);
+  border: 1px solid gold;
+  text-align: center;
+  padding: 10px 0px 10px 0px;
+  color: #838383;
+}
+
+.calendar-day--not-current {
+  color: #d3d3d3;
 }
 </style>

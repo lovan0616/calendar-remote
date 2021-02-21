@@ -11,6 +11,11 @@ const routes = [
     component: () => import('../views/CalendarMonth.vue')
   },
   {
+    path: '/calendarday/:date',
+    name: 'calendar-day',
+    component:() => import('../views/CalendarDay.vue')
+  },
+  {
     path: '*',
     name: 'NotFound',
     component: NotFound

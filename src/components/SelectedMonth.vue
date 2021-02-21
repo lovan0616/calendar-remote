@@ -15,8 +15,15 @@ export default {
   },
   computed: {
     selectedMonth() {
-      return this.selectedDate.format('MMMM YYYY')
+      return this.selectedDate.format('YYYY / MM')
     }
   }
 }
 </script>
+
+<style scoped>
+.selected-month-wrapper {
+  margin: 15px 0px 10px 0px ;
+  text-align: center;
+}
+</style>

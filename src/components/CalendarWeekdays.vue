@@ -1,5 +1,5 @@
 <template>
-  <ol class="day-of-week">
+  <ol class="day-of-week mb-2">
     <li v-for="weekday in weekdays" :key="weekday">
       {{ weekday }}
     </li>
@@ -21,6 +21,7 @@ export default {
 ol {
   list-style: none;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
+  border: 1px solid salmon;
 }
 </style>
