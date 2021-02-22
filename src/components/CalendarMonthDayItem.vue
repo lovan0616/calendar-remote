@@ -13,7 +13,7 @@
       name: 'calendar-day',
       params: {date: day.date}
     }">
-        <span>{{ day.date | dayFormat() }}</span>
+        <div class="date-item"><p>{{ day.date | dayFormat() }}</p></div>
       </router-link>
     </li>
   </ol>
@@ -131,16 +131,14 @@ export default {
 
 <style scoped>
 a {
-  color: inherit
-}
-.days-grid {
-  border: 1px solid red;
+  width: 100%;
+  color: inherit;
+  text-decoration: none;
 }
 
 .calendar-day {
   list-style: none;
   width: calc(100% / 7);
-  border: 1px solid gold;
   text-align: center;
   padding: 10px 0px 10px 0px;
   color: #838383;
@@ -148,5 +146,11 @@ a {
 
 .calendar-day--not-current {
   color: #d3d3d3;
+}
+
+.date-item:hover {
+  border-radius: 50%;
+  background-color: #7f75b2;
+  color: #ffffff;
 }
 </style>

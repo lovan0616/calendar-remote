@@ -22,6 +22,5 @@ ol {
   list-style: none;
   display: flex;
   justify-content: space-around;
-  border: 1px solid salmon;
 }
 </style>

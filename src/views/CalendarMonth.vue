@@ -1,14 +1,18 @@
 <template>
   <div class="calendar-month">
-    <div class="header d-flex flex-column justify-content-between p-2">
+    <div class="header d-flex flex-column justify-content-between px-3 pt-3 pb-1">
       <div class="select-wrapper d-flex">
-        <CalendarDateSelector
+        <div class="calendar-icon-wrapper d-flex justify-content-center align-items-center">
+          <font-awesome-icon :icon="['far', 'calendar']"/>
+        </div>
+        
+        <!-- <CalendarDateSelector
         :current-date="today"
         :selected-date="selectedDate"
         @dateSelected="selectDate"
-      />
-        <div class="close ml-auto">
-          <span>&#10005;</span>
+      /> -->
+        <div class="close-icon-wrapper ml-auto">
+          <font-awesome-icon :icon="['fas', 'times']" size="2x"/>
         </div>
       </div>
 
@@ -44,7 +48,6 @@
 
 <script>
 import dayjs from "dayjs";
-import CalendarDateSelector from "../components/CalendarDateSelector";
 import SelectedMonth from "../components/SelectedMonth";
 import CalendarWeekdays from "../components/CalendarWeekdays";
 import CalendarMonthDayItem from "../components/CalendarMonthDayItem";
@@ -53,7 +56,6 @@ export default {
   name: "CalendarMonth",
   components: {
     SelectedMonth,
-    CalendarDateSelector,
     CalendarWeekdays,
     CalendarMonthDayItem
   },
@@ -86,16 +88,37 @@ export default {
 <style scoped>
 .header {
   width: 100%;
-  height: 100px;
+  height: 130px;
   box-shadow: 0px 3px 5px .1px rgba(0, 0, 0, 0.1);
   position: fixed;
   z-index: 1000000;
   background-color: white;
 }
 
+.calendar-icon-wrapper {
+  width: 30px;
+  height: 30px;
+  background-color: #7f74b7;
+  border-radius: 50%;
+  color: #ffffff;
+}
+
+.close-icon-wrapper {
+  color: #000000;
+}
+
 .calendar-content {
-  padding-top: 120px;
+  padding-top: 140px;
   background-color: #fafafa;
+}
+
+@media (min-width:576px), print{
+      .header {
+        visibility: hidden;
+      }
+      .calendar-content {
+        padding-top: 0;
+      }
 }
 
 </style>
