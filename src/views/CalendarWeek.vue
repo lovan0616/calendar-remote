@@ -26,7 +26,9 @@
       </div>
     </div>
 
-    <CalendarDayContent />
+    <div class="week-content d-flex">
+      <CalendarDayContent class="flex-grow-1" v-for="day in days" :key="day.date" :initial-schedule-data="day.content" />
+    </div>
   </div>
 </template>
 
@@ -37,65 +39,91 @@ import ViewSelector from "../components/VIewSelector";
 import CalendarDayContent from "../components/CalendarDayContent";
 dayjs.extend(weekday);
 
-// const dummyData = [
-//   {
-//     date: '2022-02-24',
-//     contents: [
-//       {
-//         time: "4:00pm",
-//         item: "繳信用卡費"
-//       },
-//       {
-//         time: "7:00pm",
-//         item: "買連假火車票"
-//       },
-//     ]
-//   },
-//   {
-//     date: '2022-02-26',
-//     contents: [
-//       {
-//         time: "11:00pm",
-//         item: "搶五月天演場會票"
-//       },
-//       {
-//         time: "12:00pm",
-//         item: "買健身餐食材"
-//       },
-//       {
-//         time: "2:00pm",
-//         item: "和Emily確認製作預算"
-//       },
-//       {
-//         time: "4:00pm",
-//         item: "請Paul幫忙看風水"
-//       },
-//     ]
-//   },
-//   {
-//     date: '2022-03-03',
-//     contents: [
-//       {
-//         time: "9:00pm",
-//         item: "複習電商網站切版"
-//       },
-//       {
-//         time: "9:00am",
-//         item: "和Gigi吃早餐"
-//       },
-//       {
-//         time: "12:00pm",
-//         item: "打電話給Tim的醫生"
-//       },
-//     ]
-//   },
-// ]
+const dummyData = [
+  {
+    date: "2021-02-23",
+    contents: [
+      {
+        time: "7:00am",
+        event: "載姪子上課"
+      },
+      {
+        time: "9:00pm",
+        event: "standup meeting"
+      },
+      {
+        time: "2:00pm",
+        event: "打電話訂pizza"
+      },
+      {
+        time: "5:00pm",
+        event: "接姪子下課"
+      }
+    ]
+  },
+  {
+    date: "2021-02-24",
+    contents: [
+      {
+        time: "4:00pm",
+        event: "繳信用卡費"
+      },
+      {
+        time: "7:00pm",
+        event: "買連假火車票"
+      }
+    ]
+  },
+  {
+    date: "2021-02-26",
+    contents: [
+      {
+        time: "11:00pm",
+        event: "搶五月天演場會票"
+      },
+      {
+        time: "6:00am",
+        event: "morning meditation"
+      },
+      {
+        time: "12:00pm",
+        event: "買健身餐食材"
+      },
+      {
+        time: "2:00pm",
+        event: "和Emily確認製作預算"
+      },
+      {
+        time: "4:00pm",
+        event: "請Paul幫忙看風水"
+      }
+    ]
+  },
+  {
+    date: "2021-03-03",
+    contents: [
+      {
+        time: "9:00pm",
+        event: "複習電商網站切版"
+      },
+      {
+        time: "9:00am",
+        event: "和Gigi吃早餐"
+      },
+      {
+        time: "12:00pm",
+        event: "打電話給Tim的醫生"
+      }
+    ]
+  }
+]; 
 
 export default {
   name: "CalendarWeek",
   data() {
     return {
-      date: this.$route.params.date
+      date: this.$route.params.date,
+      scheduleData: []
     };
   },
   components: {
@@ -108,7 +136,15 @@ export default {
     },
     selectDate(date) {
       this.$router.push({ name: "calendar-day", params: { date } });
-    }
+    },
+    dispatchContents() {
+      this.days.forEach(day => {
+        day.content = dummyData.filter(item => item.date === day.date).length ? dummyData.filter(item => item.date === day.date)[0].contents : []
+      })
+  },
+  },
+  created() {
+    this.dispatchContents()
   },
   computed: {
     thisWeekPreviousDay() {
@@ -120,14 +156,16 @@ export default {
           date: dayjs(this.date)
             .subtract(visibleNumberOfPreviousDay - index, "day")
             .format("YYYY-MM-DD"),
-          isSelectedDay: false
+          isSelectedDay: false,
+          content: []
         };
       });
     },
     thisDay() {
       return {
         date: dayjs(this.date).format("YYYY-MM-DD"),
-        isSelectedDay: true
+        isSelectedDay: true,
+        content: []
       };
     },
     thisWeekNextDay() {
@@ -139,7 +177,8 @@ export default {
           date: dayjs(this.date)
             .add(index + 1, "day")
             .format("YYYY-MM-DD"),
-          isSelectedDay: false
+          isSelectedDay: false,
+          content: []
         };
       });
     },
@@ -196,6 +235,10 @@ export default {
   border: 1px solid salmon;
 }
 
+.selector h1 {
+  font-size: larger;
+}
+
 .view {
   background-color: #d9d5ee;
   color: #7d71b9;
@@ -232,5 +275,10 @@ export default {
 .is-selected-day {
   background-color: #7f74b5;
   color: #ffffff;
+}
+
+.week-content {
+  width: 100%;
+  border: 1px solid salmon
 }
 </style>
