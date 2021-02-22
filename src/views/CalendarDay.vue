@@ -1,20 +1,21 @@
 <template>
   <div class="calendar-day">
     <div class="header d-flex flex-column justify-content-between p-2">
-      <div class="date-selector d-flex align-items-center">
+      <div class="selector d-flex align-items-center">
         <DaySelector :inital-date="date" />
-        <div class="view">日檢視</div>
+        <ViewSelector />
       </div>
       <div class="week-list-wrapper d-flex">
         <div class="calendar-icon">test here</div>
         <div class="week-list flex-grow-1">
-          <CalendarWeekdays />
           <ol class="d-flex justify-content-around">
-            <li v-for="day in days" :key="day.date">{{ day.date }}</li>
+            <li v-for="day in days" :key="day.date" @click.stop.prevent="selectDate(day.date)" :class="{'is-selected-day':day.isSelectedDay}">{{ day.date | dateFormat }}</li>
           </ol>
         </div>
       </div>
     </div>
+
+    <CalendarDayContent />
   </div>
 </template>
 
@@ -22,8 +23,63 @@
 import dayjs from "dayjs";
 import weekday from "dayjs/plugin/weekday";
 import DaySelector from "../components/DaySelector";
-import CalendarWeekdays from "../components/CalendarWeekdays";
+import ViewSelector from "../components/VIewSelector"
+import CalendarDayContent from '../components/CalendarDayContent'
 dayjs.extend(weekday);
+
+// const dummyData = [
+//   {
+//     date: '2022-02-24',
+//     contents: [
+//       {
+//         time: "4:00pm",
+//         item: "繳信用卡費"
+//       },
+//       {
+//         time: "7:00pm",
+//         item: "買連假火車票"
+//       },
+//     ]
+//   },
+//   {
+//     date: '2022-02-26',
+//     contents: [
+//       {
+//         time: "11:00pm",
+//         item: "搶五月天演場會票"
+//       },
+//       {
+//         time: "12:00pm",
+//         item: "買健身餐食材"
+//       },
+//       {
+//         time: "2:00pm",
+//         item: "和Emily確認製作預算"
+//       },
+//       {
+//         time: "4:00pm",
+//         item: "請Paul幫忙看風水"
+//       },
+//     ]
+//   },
+//   {
+//     date: '2022-03-03',
+//     contents: [
+//       {
+//         time: "9:00pm",
+//         item: "複習電商網站切版"
+//       },
+//       {
+//         time: "9:00am",
+//         item: "和Gigi吃早餐"
+//       },
+//       {
+//         time: "12:00pm",
+//         item: "打電話給Tim的醫生"
+//       },
+//     ]
+//   },
+// ]
 
 export default {
   name: "CalendarDay",
@@ -34,11 +90,15 @@ export default {
   },
   components: {
     DaySelector,
-    CalendarWeekdays
+    ViewSelector,
+    CalendarDayContent
   },
   methods: {
     getWeekday(date) {
       return dayjs(date).weekday();
+    },
+    selectDate(date) {
+      this.$router.push({ name: 'calendar-day',params: { date }})
     }
   },
   computed: {
@@ -49,16 +109,15 @@ export default {
       return [...Array(visibleNumberOfPreviousDay)].map((day, index) => {
         return {
           date: dayjs(this.date)
-            .subtract(visibleNumberOfPreviousDay - index, "day")
-            .format("DD"),
-          isToday: false
+            .subtract(visibleNumberOfPreviousDay - index, "day").format("YYYY-MM-DD"),
+          isSelectedDay: false
         };
       });
     },
     thisDay() {
       return {
-        date: dayjs(this.date).format("DD"),
-        isToday: true
+        date: dayjs(this.date).format("YYYY-MM-DD"),
+        isSelectedDay: true
       };
     },
     thisWeekNextDay() {
@@ -68,9 +127,8 @@ export default {
       return [...Array(visibleNumberOfNextDay)].map((day, index) => {
         return {
           date: dayjs(this.date)
-            .add(index + 1, "day")
-            .format("DD"),
-          isToday: false
+            .add(index + 1, "day").format("YYYY-MM-DD"),
+          isSelectedDay: false
         };
       });
     },
@@ -84,9 +142,13 @@ export default {
   },
   beforeRouteUpdate(to, from, next) {
     const { date } = to.params;
-    console.log(date);
     this.date = date;
     next();
+  },
+  filters: {
+    dateFormat(date) {
+      return dayjs(date).format('DD')
+    }
   }
 };
 </script>
@@ -101,7 +163,7 @@ export default {
   background-color: white;
 }
 
-.date-selector {
+.selector {
   border: 1px solid salmon;
 }
 
@@ -122,5 +184,13 @@ ol {
 
 li {
   border: 1px solid firebrick;
+  width: 100%;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.is-selected-day {
+  background-color: #7f74b5;
+  color: #ffffff;
 }
 </style>
