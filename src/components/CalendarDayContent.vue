@@ -52,7 +52,7 @@ export default {
   methods: {
     dispatchEvent() {
       this.schedules.forEach(schedule => {
-        schedule.event = ''
+        schedule.event = ""
         this.initialScheduleData.forEach(item => {
           if(item.time === schedule.time) {
             schedule.event = item.event

@@ -25,7 +25,7 @@
         </div>
       </div>
     </div>
-
+    
     <CalendarDayContent :initial-schedule-data="scheduleData" />
   </div>
 </template>
@@ -128,7 +128,7 @@ export default {
   components: {
     DaySelector,
     ViewSelector,
-    CalendarDayContent
+    CalendarDayContent,
   },
   methods: {
     getWeekday(date) {

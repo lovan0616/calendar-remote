@@ -231,10 +231,6 @@ export default {
   background-color: white;
 }
 
-.selector {
-  border: 1px solid salmon;
-}
-
 .selector h1 {
   font-size: larger;
 }
@@ -279,6 +275,5 @@ export default {
 
 .week-content {
   width: 100%;
-  border: 1px solid salmon
 }
 </style>
