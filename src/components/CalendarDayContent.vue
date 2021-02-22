@@ -1,10 +1,12 @@
 <template>
   <div class="calendar-day-content px-2">
-    <div class="row d-flex" v-for="time in times" :key="time">
+    <div class="row d-flex" v-for="schedule in schedules" :key="schedule.time">
       <div class="time d-flex align-items-end justify-content-center">
-        <p>{{ time }}</p>
+        <p>{{ schedule.time }}</p>
       </div>
-      <div class="sheet flex-grow-1"></div>
+      <div class="sheet flex-grow-1">
+        <div class="schedule-item" v-if="schedule.event">{{ schedule.event }}</div>
+      </div>
     </div>
   </div>
 </template>
@@ -13,34 +15,59 @@
 export default {
   name: "CalendarDayContent",
   data() {
-    return {
-      times: [
-        "1:00am",
-        "2:00am",
-        "3:00am",
-        "4:00am",
-        "5:00am",
-        "6:00am",
-        "7:00am",
-        "8:00am",
-        "9:00am",
-        "10:00am",
-        "11:00am",
-        "12:00pm",
-        "1:00pm",
-        "2:00pm",
-        "3:00pm",
-        "4:00pm",
-        "5:00pm",
-        "6:00pm",
-        "7:00pm",
-        "8:00pm",
-        "9:00pm",
-        "10:00pm",
-        "11:00pm",
-        "00:00am"
+    return { 
+      schedules: [{time: "1:00am", event: ''},
+      {time: "2:00am", event: ''},
+      {time: "3:00am", event: ''},
+      {time: "4:00am", event: ''},
+      {time: "5:00am", event: ''},
+      {time: "6:00am", event: ''},
+      {time: "7:00am", event: ''},
+      {time: "8:00am", event: ''},
+      {time: "9:00am", event: ''},
+      {time: "10:00am", event: ''},
+      {time: "11:00am", event: ''}, 
+      {time: "12:00pm", event: ''},
+      {time: "1:00pm", event: ''},
+      {time: "2:00pm", event: ''},
+      {time: "3:00pm", event: ''},
+      {time: "4:00pm", event: ''},
+      {time: "5:00pm", event: ''},
+      {time: "6:00pm", event: ''},
+      {time: "7:00pm", event: ''},
+      {time: "8:00pm", event: ''},
+      {time: "9:00pm", event: ''},
+      {time: "10:00pm", event: ''},
+      {time: "11:00pm", event: ''},
+      {time: "00:00am", event: ''},
       ]
     };
+  },
+  props: {
+    initialScheduleData: {
+      type: Array,
+      required: true
+    }
+  },
+  methods: {
+    dispatchEvent() {
+      this.schedules.forEach(schedule => {
+        schedule.event = ''
+        this.initialScheduleData.forEach(item => {
+          if(item.time === schedule.time) {
+            schedule.event = item.event
+          }
+        })
+      })
+    }
+  },
+  created() {
+    this.dispatchEvent()
+  },
+  watch: {
+    initialScheduleData() {
+      this.dispatchEvent()
+    }
   }
 };
 </script>
@@ -62,10 +89,17 @@ export default {
 
 .sheet {
   border-bottom: 1px solid #c4c4c4;
+  cursor: pointer;
 }
 
 .sheet:hover {
   background-color: #f6f6f6;
 }
 
+.schedule-item {
+  background-color: #e5e5e5;
+  height: 100%;
+  border-radius: 10px;
+  padding: 10px;
+}
 </style>

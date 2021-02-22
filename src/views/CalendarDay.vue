@@ -6,16 +6,27 @@
         <ViewSelector />
       </div>
       <div class="week-list-wrapper d-flex">
-        <div class="calendar-icon">test here</div>
+        <div class="calendar-icon-wrapper d-flex justify-content-center align-items-center mt-1">
+          <font-awesome-icon :icon="['far', 'calendar']" />
+        </div>
         <div class="week-list flex-grow-1">
           <ol class="d-flex justify-content-around">
-            <li v-for="day in days" :key="day.date" @click.stop.prevent="selectDate(day.date)" :class="{'is-selected-day':day.isSelectedDay}">{{ day.date | dateFormat }}</li>
+            <li
+              v-for="day in days"
+              :key="day.date"
+              @click.stop.prevent="selectDate(day.date)"
+              :class="{'is-selected-day':day.isSelectedDay}"
+              class="d-flex flex-column justify-content-around align-items-center"
+            >
+              <span class="li-week-day">{{ day.date | weekDayFormat}}</span>
+              <span class="li-date">{{ day.date | dateFormat }}</span>
+            </li>
           </ol>
         </div>
       </div>
     </div>
 
-    <CalendarDayContent />
+    <CalendarDayContent :initial-schedule-data="scheduleData" />
   </div>
 </template>
 
@@ -23,69 +34,95 @@
 import dayjs from "dayjs";
 import weekday from "dayjs/plugin/weekday";
 import DaySelector from "../components/DaySelector";
-import ViewSelector from "../components/VIewSelector"
-import CalendarDayContent from '../components/CalendarDayContent'
+import ViewSelector from "../components/VIewSelector";
+import CalendarDayContent from "../components/CalendarDayContent";
 dayjs.extend(weekday);
 
-// const dummyData = [
-//   {
-//     date: '2022-02-24',
-//     contents: [
-//       {
-//         time: "4:00pm",
-//         item: "繳信用卡費"
-//       },
-//       {
-//         time: "7:00pm",
-//         item: "買連假火車票"
-//       },
-//     ]
-//   },
-//   {
-//     date: '2022-02-26',
-//     contents: [
-//       {
-//         time: "11:00pm",
-//         item: "搶五月天演場會票"
-//       },
-//       {
-//         time: "12:00pm",
-//         item: "買健身餐食材"
-//       },
-//       {
-//         time: "2:00pm",
-//         item: "和Emily確認製作預算"
-//       },
-//       {
-//         time: "4:00pm",
-//         item: "請Paul幫忙看風水"
-//       },
-//     ]
-//   },
-//   {
-//     date: '2022-03-03',
-//     contents: [
-//       {
-//         time: "9:00pm",
-//         item: "複習電商網站切版"
-//       },
-//       {
-//         time: "9:00am",
-//         item: "和Gigi吃早餐"
-//       },
-//       {
-//         time: "12:00pm",
-//         item: "打電話給Tim的醫生"
-//       },
-//     ]
-//   },
-// ]
+const dummyData = [
+  {
+    date: "2021-02-23",
+    contents: [
+      {
+        time: "7:00am",
+        event: "載姪子上課"
+      },
+      {
+        time: "9:00pm",
+        event: "standup meeting"
+      },
+      {
+        time: "2:00pm",
+        event: "打電話訂pizza"
+      },
+      {
+        time: "5:00pm",
+        event: "接姪子下課"
+      }
+    ]
+  },
+  {
+    date: "2021-02-24",
+    contents: [
+      {
+        time: "4:00pm",
+        event: "繳信用卡費"
+      },
+      {
+        time: "7:00pm",
+        event: "買連假火車票"
+      }
+    ]
+  },
+  {
+    date: "2021-02-26",
+    contents: [
+      {
+        time: "11:00pm",
+        event: "搶五月天演場會票"
+      },
+      {
+        time: "6:00am",
+        event: "morning meditation"
+      },
+      {
+        time: "12:00pm",
+        event: "買健身餐食材"
+      },
+      {
+        time: "2:00pm",
+        event: "和Emily確認製作預算"
+      },
+      {
+        time: "4:00pm",
+        event: "請Paul幫忙看風水"
+      }
+    ]
+  },
+  {
+    date: "2021-03-03",
+    contents: [
+      {
+        time: "9:00pm",
+        event: "複習電商網站切版"
+      },
+      {
+        time: "9:00am",
+        event: "和Gigi吃早餐"
+      },
+      {
+        time: "12:00pm",
+        event: "打電話給Tim的醫生"
+      }
+    ]
+  }
+];
 
 export default {
   name: "CalendarDay",
   data() {
     return {
-      date: this.$route.params.date
+      date: this.$route.params.date,
+      scheduleData: []
     };
   },
   components: {
@@ -98,7 +135,25 @@ export default {
       return dayjs(date).weekday();
     },
     selectDate(date) {
-      this.$router.push({ name: 'calendar-day',params: { date }})
+      this.$router.push({ name: "calendar-day", params: { date } });
+    },
+    fetchScheduleData() {
+      if (!dummyData.filter(data => data.date === this.date).length) {
+        this.scheduleData = [];
+      } else {
+        this.scheduleData = [
+          ...dummyData.filter(data => data.date === this.date)[0].contents
+        ];
+      }
+    }
+  },
+  created() {
+    this.fetchScheduleData();
+  },
+  watch: {
+    date() {
+      console.log("change");
+      this.fetchScheduleData();
     }
   },
   computed: {
@@ -109,7 +164,8 @@ export default {
       return [...Array(visibleNumberOfPreviousDay)].map((day, index) => {
         return {
           date: dayjs(this.date)
-            .subtract(visibleNumberOfPreviousDay - index, "day").format("YYYY-MM-DD"),
+            .subtract(visibleNumberOfPreviousDay - index, "day")
+            .format("YYYY-MM-DD"),
           isSelectedDay: false
         };
       });
@@ -127,7 +183,8 @@ export default {
       return [...Array(visibleNumberOfNextDay)].map((day, index) => {
         return {
           date: dayjs(this.date)
-            .add(index + 1, "day").format("YYYY-MM-DD"),
+            .add(index + 1, "day")
+            .format("YYYY-MM-DD"),
           isSelectedDay: false
         };
       });
@@ -147,7 +204,25 @@ export default {
   },
   filters: {
     dateFormat(date) {
-      return dayjs(date).format('DD')
+      return dayjs(date).format("DD");
+    },
+    weekDayFormat(date) {
+      switch (dayjs(date).format("ddd")) {
+        case "Sun":
+          return "S";
+        case "Mon":
+          return "M";
+        case "Tue":
+          return "T";
+        case "Wed":
+          return "W";
+        case "Thu":
+          return "T";
+        case "Fri":
+          return "F";
+        case "Sat":
+          return "S";
+      }
     }
   }
 };
@@ -156,15 +231,11 @@ export default {
 <style scoped>
 .header {
   width: 100%;
-  height: 100px;
+  height: 120px;
   box-shadow: 0px 3px 5px 0.1px rgba(0, 0, 0, 0.1);
   position: fixed;
   z-index: 1000000;
   background-color: white;
-}
-
-.selector {
-  border: 1px solid salmon;
 }
 
 .view {
@@ -175,18 +246,29 @@ export default {
 }
 
 .week-list-wrapper {
-  border: 1px solid green;
+  height: 50px;
 }
 
-ol {
-  border: 1px solid;
+.week-list ol {
+  height: 100%;
 }
 
-li {
-  border: 1px solid firebrick;
+.week-list li {
   width: 100%;
   border-radius: 5px;
   text-align: center;
+}
+
+.week-list li:not(.is-selected-day):hover {
+  background-color: #d9d5ee;
+}
+
+.calendar-icon-wrapper {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #dedaf4;
+  color: #7f74b6;
 }
 
 .is-selected-day {

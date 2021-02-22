@@ -38,7 +38,6 @@ export default {
 <style scoped>
 .day-selector {
   width: 160px;
-  margin-right: auto;
 }
 .day-selector div{
   width: 15px;
