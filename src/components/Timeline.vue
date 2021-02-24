@@ -1,6 +1,9 @@
 <template>
-  <div class="timeline d-flex align-items-end justify-content-center">
-    <p>{{ time }}</p>
+  <div class="timeline-wrapper">
+    <div class="timeline d-flex align-items-end justify-content-center" v-for="time in times" :key="time">
+      <p>{{ time }}</p>
+    </div>
+   
   </div>
 </template>
 
@@ -16,11 +19,12 @@ export default {
 </script>
 
 <style scoped>
-.time {
+.timeline-wrapper {
+  padding-top: 120px ;
+}
+.timeline {
   width: 80px;
   height: 60px;
   border: 1px solid #c4c4c4;
-  border-left: transparent;
-  border-top: transparent;
 }
 </style>

@@ -27,7 +27,8 @@
     </div>
 
     <div class="week-content d-flex">
-      <CalendarDayContent class="flex-grow-1" v-for="day in days" :key="day.date" :initial-schedule-data="day.content" />
+      <Timeline />
+      <CalendarDayContent v-for="day in days" :key="day.date" :initial-schedule-data="day.content" />
     </div>
   </div>
 </template>
@@ -37,6 +38,7 @@ import dayjs from "dayjs";
 import weekday from "dayjs/plugin/weekday";
 import ViewSelector from "../components/VIewSelector";
 import CalendarDayContent from "../components/CalendarDayContent";
+import Timeline from "../components/Timeline"
 dayjs.extend(weekday);
 
 const dummyData = [
@@ -128,7 +130,8 @@ export default {
   },
   components: {
     ViewSelector,
-    CalendarDayContent
+    CalendarDayContent,
+    Timeline
   },
   methods: {
     getWeekday(date) {

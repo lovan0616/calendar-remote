@@ -25,8 +25,12 @@
         </div>
       </div>
     </div>
+
+    <div class="row d-flex flex-nowrap">
+      <Timeline />
+      <CalendarDayContent :initial-schedule-data="scheduleData"  />
+    </div>
     
-    <CalendarDayContent :initial-schedule-data="scheduleData" />
   </div>
 </template>
 
@@ -36,6 +40,7 @@ import weekday from "dayjs/plugin/weekday";
 import DaySelector from "../components/DaySelector";
 import ViewSelector from "../components/VIewSelector";
 import CalendarDayContent from "../components/CalendarDayContent";
+import Timeline from '../components/Timeline'
 dayjs.extend(weekday);
 
 const dummyData = [
@@ -129,6 +134,7 @@ export default {
     DaySelector,
     ViewSelector,
     CalendarDayContent,
+    Timeline
   },
   methods: {
     getWeekday(date) {
