@@ -1,7 +1,9 @@
 <template>
   <div class="calendar-day-content">
     <div class="sheet" v-for="schedule in schedules" :key="schedule.time">
-      <div class="schedule-item" v-if="schedule.event">{{ schedule.event }}</div>
+      <div class="schedule-item-wrapper d-flex h-100">
+        <div class="schedule-item d-flex align-items-center mr-2" v-for="(event, index) in schedule.events" :key="index"><p>{{ event }}</p></div>
+      </div>
     </div>
   </div>
 </template>
@@ -12,30 +14,30 @@ export default {
   data() {
     return {
       schedules: [
-        { time: "1:00am", event: "" },
-        { time: "2:00am", event: "" },
-        { time: "3:00am", event: "" },
-        { time: "4:00am", event: "" },
-        { time: "5:00am", event: "" },
-        { time: "6:00am", event: "" },
-        { time: "7:00am", event: "" },
-        { time: "8:00am", event: "" },
-        { time: "9:00am", event: "" },
-        { time: "10:00am", event: "" },
-        { time: "11:00am", event: "" },
-        { time: "12:00pm", event: "" },
-        { time: "1:00pm", event: "" },
-        { time: "2:00pm", event: "" },
-        { time: "3:00pm", event: "" },
-        { time: "4:00pm", event: "" },
-        { time: "5:00pm", event: "" },
-        { time: "6:00pm", event: "" },
-        { time: "7:00pm", event: "" },
-        { time: "8:00pm", event: "" },
-        { time: "9:00pm", event: "" },
-        { time: "10:00pm", event: "" },
-        { time: "11:00pm", event: "" },
-        { time: "00:00am", event: "" }
+        { time: "1:00am", events: [] },
+        { time: "2:00am", events: [] },
+        { time: "3:00am", events: [] },
+        { time: "4:00am", events: [] },
+        { time: "5:00am", events: [] },
+        { time: "6:00am", events: [] },
+        { time: "7:00am", events: [] },
+        { time: "8:00am", events: [] },
+        { time: "9:00am", events: [] },
+        { time: "10:00am", events:[] },
+        { time: "11:00am",events: []},
+        { time: "12:00pm",events: []},
+        { time: "1:00pm", events: [] },
+        { time: "2:00pm", events: [] },
+        { time: "3:00pm", events: [] },
+        { time: "4:00pm", events: [] },
+        { time: "5:00pm", events: [] },
+        { time: "6:00pm", events: [] },
+        { time: "7:00pm", events: [] },
+        { time: "8:00pm", events: [] },
+        { time: "9:00pm", events: [] },
+        { time: "10:00pm", events: [] },
+        { time: "11:00pm", events: [] },
+        { time: "00:00am", events: [] }
       ]
     };
   },
@@ -48,10 +50,13 @@ export default {
   methods: {
     dispatchEvent() {
       this.schedules.forEach(schedule => {
-        schedule.event = "";
+        schedule.events = [];
         this.initialScheduleData.forEach(item => {
           if (item.time === schedule.time) {
-            schedule.event = item.event;
+            schedule.events = [
+              ...schedule.events,
+              ...item.events
+            ];
           }
         });
       });

@@ -30,6 +30,10 @@
       <Timeline />
       <CalendarDayContent :initial-schedule-data="scheduleData"  />
     </div>
+
+    <AddEvent />
+
+
     
   </div>
 </template>
@@ -41,6 +45,7 @@ import DaySelector from "../components/DaySelector";
 import ViewSelector from "../components/VIewSelector";
 import CalendarDayContent from "../components/CalendarDayContent";
 import Timeline from '../components/Timeline'
+import AddEvent from '../components/AddEvent'
 dayjs.extend(weekday);
 
 const dummyData = [
@@ -49,19 +54,19 @@ const dummyData = [
     contents: [
       {
         time: "7:00am",
-        event: "載姪子上課"
+        events: ["載姪子上課"]
       },
       {
         time: "9:00pm",
-        event: "standup meeting"
+        events: ["standup meeting"]
       },
       {
         time: "2:00pm",
-        event: "打電話訂pizza"
+        events: ["打電話訂pizza"]
       },
       {
         time: "5:00pm",
-        event: "接姪子下課"
+        events: ["接姪子下課"]
       }
     ]
   },
@@ -70,11 +75,11 @@ const dummyData = [
     contents: [
       {
         time: "4:00pm",
-        event: "繳信用卡費"
+        events: ["繳信用卡費"]
       },
       {
         time: "7:00pm",
-        event: "買連假火車票"
+        events: ["買連假火車票"]
       }
     ]
   },
@@ -83,23 +88,23 @@ const dummyData = [
     contents: [
       {
         time: "11:00pm",
-        event: "搶五月天演場會票"
+        events: ["搶五月天演場會票"]
       },
       {
         time: "6:00am",
-        event: "morning meditation"
+        events: ["morning meditation"]
       },
       {
         time: "12:00pm",
-        event: "買健身餐食材"
+        events: ["買健身餐食材","和Ben吃午餐"]
       },
       {
         time: "2:00pm",
-        event: "和Emily確認製作預算"
+        events: ["和Emily確認製作預算"]
       },
       {
         time: "4:00pm",
-        event: "請Paul幫忙看風水"
+        events: ["請Paul幫忙看風水"]
       }
     ]
   },
@@ -108,15 +113,15 @@ const dummyData = [
     contents: [
       {
         time: "9:00pm",
-        event: "複習電商網站切版"
+        evenst: ["複習電商網站切版"]
       },
       {
         time: "9:00am",
-        event: "和Gigi吃早餐"
+        events: ["和Gigi吃早餐"]
       },
       {
         time: "12:00pm",
-        event: "打電話給Tim的醫生"
+        events: ["打電話給Tim的醫生"]
       }
     ]
   }
@@ -134,7 +139,8 @@ export default {
     DaySelector,
     ViewSelector,
     CalendarDayContent,
-    Timeline
+    Timeline,
+    AddEvent
   },
   methods: {
     getWeekday(date) {

@@ -1,7 +1,7 @@
 <template>
   <div class="day-selector d-flex justify-content-between">
     <div @click="selectPrevious">﹤</div>
-    <span>{{ initalDate | dateFormat }}</span>
+    <span @click="$router.push('/')">{{ initalDate | dateFormat }}</span>
     <div @click="selectNext">﹥</div>
   </div>
 </template>
