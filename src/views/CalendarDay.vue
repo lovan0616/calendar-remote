@@ -28,13 +28,13 @@
 
     <div class="row d-flex flex-nowrap">
       <Timeline />
-      <CalendarDayContent :initial-schedule-data="scheduleData"  />
+      <CalendarDayContent
+        :initial-schedule-data="scheduleData"
+        @after-edit-event="handleAfterEditEvent"
+      />
     </div>
 
-    <AddEvent />
-
-
-    
+    <AddEvent @after-submit="handleAfterSubmit" />
   </div>
 </template>
 
@@ -44,88 +44,88 @@ import weekday from "dayjs/plugin/weekday";
 import DaySelector from "../components/DaySelector";
 import ViewSelector from "../components/VIewSelector";
 import CalendarDayContent from "../components/CalendarDayContent";
-import Timeline from '../components/Timeline'
-import AddEvent from '../components/AddEvent'
+import Timeline from "../components/Timeline";
+import AddEvent from "../components/AddEvent";
 dayjs.extend(weekday);
 
-const dummyData = [
-  {
-    date: "2021-02-23",
-    contents: [
-      {
-        time: "7:00am",
-        events: ["載姪子上課"]
-      },
-      {
-        time: "9:00pm",
-        events: ["standup meeting"]
-      },
-      {
-        time: "2:00pm",
-        events: ["打電話訂pizza"]
-      },
-      {
-        time: "5:00pm",
-        events: ["接姪子下課"]
-      }
-    ]
-  },
-  {
-    date: "2021-02-24",
-    contents: [
-      {
-        time: "4:00pm",
-        events: ["繳信用卡費"]
-      },
-      {
-        time: "7:00pm",
-        events: ["買連假火車票"]
-      }
-    ]
-  },
-  {
-    date: "2021-02-26",
-    contents: [
-      {
-        time: "11:00pm",
-        events: ["搶五月天演場會票"]
-      },
-      {
-        time: "6:00am",
-        events: ["morning meditation"]
-      },
-      {
-        time: "12:00pm",
-        events: ["買健身餐食材","和Ben吃午餐"]
-      },
-      {
-        time: "2:00pm",
-        events: ["和Emily確認製作預算"]
-      },
-      {
-        time: "4:00pm",
-        events: ["請Paul幫忙看風水"]
-      }
-    ]
-  },
-  {
-    date: "2021-03-03",
-    contents: [
-      {
-        time: "9:00pm",
-        evenst: ["複習電商網站切版"]
-      },
-      {
-        time: "9:00am",
-        events: ["和Gigi吃早餐"]
-      },
-      {
-        time: "12:00pm",
-        events: ["打電話給Tim的醫生"]
-      }
-    ]
-  }
-];
+// const dummyData = [
+//   {
+//     date: "2021-02-23",
+//     contents: [
+//       {
+//         time: "7:00am",
+//         events: ["載姪子上課"]
+//       },
+//       {
+//         time: "9:00pm",
+//         events: ["standup meeting"]
+//       },
+//       {
+//         time: "2:00pm",
+//         events: ["打電話訂pizza"]
+//       },
+//       {
+//         time: "5:00pm",
+//         events: ["接姪子下課"]
+//       }
+//     ]
+//   },
+//   {
+//     date: "2021-02-24",
+//     contents: [
+//       {
+//         time: "4:00pm",
+//         events: ["繳信用卡費"]
+//       },
+//       {
+//         time: "7:00pm",
+//         events: ["買連假火車票"]
+//       }
+//     ]
+//   },
+//   {
+//     date: "2021-02-26",
+//     contents: [
+//       {
+//         time: "11:00pm",
+//         events: ["搶五月天演場會票"]
+//       },
+//       {
+//         time: "6:00am",
+//         events: ["morning meditation"]
+//       },
+//       {
+//         time: "12:00pm",
+//         events: ["買健身餐食材","和Ben吃午餐"]
+//       },
+//       {
+//         time: "2:00pm",
+//         events: ["和Emily確認製作預算"]
+//       },
+//       {
+//         time: "4:00pm",
+//         events: ["請Paul幫忙看風水"]
+//       }
+//     ]
+//   },
+//   {
+//     date: "2021-03-03",
+//     contents: [
+//       {
+//         time: "9:00pm",
+//         events: ["複習電商網站切版"]
+//       },
+//       {
+//         time: "9:00am",
+//         events: ["和Gigi吃早餐"]
+//       },
+//       {
+//         time: "12:00pm",
+//         events: ["打電話給Tim的醫生"]
+//       }
+//     ]
+//   }
+// ];
 
 export default {
   name: "CalendarDay",
@@ -150,13 +150,91 @@ export default {
       this.$router.push({ name: "calendar-day", params: { date } });
     },
     fetchScheduleData() {
-      if (!dummyData.filter(data => data.date === this.date).length) {
+      const storageData = JSON.parse(localStorage.getItem("schedule")) || [];
+      if (!storageData.filter(data => data.date === this.date).length) {
         this.scheduleData = [];
       } else {
         this.scheduleData = [
-          ...dummyData.filter(data => data.date === this.date)[0].contents
+          ...storageData.filter(data => data.date === this.date)[0].contents
         ];
       }
+    },
+    handleAfterSubmit(time, event, color) {
+      const storageData = JSON.parse(localStorage.getItem("schedule")) || [];
+      const isSelectedDayContentExist = storageData.some(
+        item => item.date === this.date
+      );
+      if (!isSelectedDayContentExist) {
+        storageData.push({
+          date: this.date,
+          contents: [{ time, events: [{ event, color }] }]
+        });
+        localStorage.setItem("schedule", JSON.stringify(storageData));
+        console.log("no date");
+      } else {
+        const isSelectedDayContentTimeExist = storageData
+          .find(item => item.date === this.date)
+          .contents.some(content => content.time === time);
+        if (!isSelectedDayContentTimeExist) {
+          storageData
+            .find(item => item.date === this.date)
+            .contents.push({
+              time,
+              events: [{ event, color }]
+            });
+          localStorage.setItem("schedule", JSON.stringify(storageData));
+          console.log("have date, no time");
+        } else {
+          storageData
+            .find(item => item.date === this.date)
+            .contents.find(content => content.time === time)
+            .events.push({
+              event,
+              color
+            });
+          localStorage.setItem("schedule", JSON.stringify(storageData));
+          console.log("have date, have time");
+        }
+      }
+      this.fetchScheduleData();
+    },
+    handleAfterEditEvent(newEditItem, initialEditItem) {
+      const storageData = JSON.parse(localStorage.getItem('schedule'))
+      //未修改時間
+      if(newEditItem.time === initialEditItem.time) {
+       //找出對應的行程方塊物件，修改其行程名稱與顏色
+       storageData.find(data => data.date === this.date).contents.find(content => content.time === initialEditItem.time).events.find(item => item.event === initialEditItem.event).color = newEditItem.color 
+
+        storageData.find(data => data.date === this.date).contents.find(content => content.time === initialEditItem.time).events.find(item => item.event === initialEditItem.event).event = newEditItem.event 
+
+        localStorage.setItem('schedule', JSON.stringify(storageData))
+      } else {
+        //刪除該時間點上的行程方塊物件
+        storageData.find(data => data.date === this.date).contents.find(content => content.time === initialEditItem.time).events = storageData.find(data => data.date === this.date).contents.find(content => content.time === initialEditItem.time).events.filter(item => item.event !== initialEditItem.event)
+
+        
+        //在新的時間點上新增行程方塊物件
+        const timeObjectExist = storageData.find(data => data.date === this.date).contents.some(content => content.time === newEditItem.time)
+
+        if(timeObjectExist) {
+          storageData.find(data => data.date === this.date).contents.find(content => content.time === newEditItem.time).events.push({
+          event: newEditItem.event,
+          color: newEditItem.color
+        })
+        } else {
+          storageData.find(data => data.date === this.date).contents.push({
+            time: newEditItem.time,
+            events: [{
+              event: newEditItem.event,
+              color: newEditItem.color
+            }]
+          })
+        }
+
+        localStorage.setItem('schedule', JSON.stringify(storageData))
+      }
+
+      this.fetchScheduleData();
     }
   },
   created() {

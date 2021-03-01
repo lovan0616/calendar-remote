@@ -41,84 +41,84 @@ import CalendarDayContent from "../components/CalendarDayContent";
 import Timeline from "../components/Timeline"
 dayjs.extend(weekday);
 
-const dummyData = [
-  {
-    date: "2021-02-23",
-    contents: [
-      {
-        time: "7:00am",
-        events: ["載姪子上課"]
-      },
-      {
-        time: "9:00pm",
-        events: ["standup meeting"]
-      },
-      {
-        time: "2:00pm",
-        events: ["打電話訂pizza"]
-      },
-      {
-        time: "5:00pm",
-        events: ["接姪子下課"]
-      }
-    ]
-  },
-  {
-    date: "2021-02-24",
-    contents: [
-      {
-        time: "4:00pm",
-        events: ["繳信用卡費"]
-      },
-      {
-        time: "7:00pm",
-        events: ["買連假火車票"]
-      }
-    ]
-  },
-  {
-    date: "2021-02-26",
-    contents: [
-      {
-        time: "11:00pm",
-        events: ["搶五月天演場會票"]
-      },
-      {
-        time: "6:00am",
-        events: ["morning meditation"]
-      },
-      {
-        time: "12:00pm",
-        events: ["買健身餐食材","和Ben吃午餐"]
-      },
-      {
-        time: "2:00pm",
-        events: ["和Emily確認製作預算"]
-      },
-      {
-        time: "4:00pm",
-        events: ["請Paul幫忙看風水"]
-      }
-    ]
-  },
-  {
-    date: "2021-03-03",
-    contents: [
-      {
-        time: "9:00pm",
-        evenst: ["複習電商網站切版"]
-      },
-      {
-        time: "9:00am",
-        events: ["和Gigi吃早餐"]
-      },
-      {
-        time: "12:00pm",
-        events: ["打電話給Tim的醫生"]
-      }
-    ]
-  }
-];
+// const dummyData = [
+//   {
+//     date: "2021-02-23",
+//     contents: [
+//       {
+//         time: "7:00am",
+//         events: ["載姪子上課"]
+//       },
+//       {
+//         time: "9:00pm",
+//         events: ["standup meeting"]
+//       },
+//       {
+//         time: "2:00pm",
+//         events: ["打電話訂pizza"]
+//       },
+//       {
+//         time: "5:00pm",
+//         events: ["接姪子下課"]
+//       }
+//     ]
+//   },
+//   {
+//     date: "2021-02-24",
+//     contents: [
+//       {
+//         time: "4:00pm",
+//         events: ["繳信用卡費"]
+//       },
+//       {
+//         time: "7:00pm",
+//         events: ["買連假火車票"]
+//       }
+//     ]
+//   },
+//   {
+//     date: "2021-02-26",
+//     contents: [
+//       {
+//         time: "11:00pm",
+//         events: ["搶五月天演場會票"]
+//       },
+//       {
+//         time: "6:00am",
+//         events: ["morning meditation"]
+//       },
+//       {
+//         time: "12:00pm",
+//         events: ["買健身餐食材","和Ben吃午餐"]
+//       },
+//       {
+//         time: "2:00pm",
+//         events: ["和Emily確認製作預算"]
+//       },
+//       {
+//         time: "4:00pm",
+//         events: ["請Paul幫忙看風水"]
+//       }
+//     ]
+//   },
+//   {
+//     date: "2021-03-03",
+//     contents: [
+//       {
+//         time: "9:00pm",
+//         events: ["複習電商網站切版"]
+//       },
+//       {
+//         time: "9:00am",
+//         events: ["和Gigi吃早餐"]
+//       },
+//       {
+//         time: "12:00pm",
+//         events: ["打電話給Tim的醫生"]
+//       }
+//     ]
+//   }
+// ];
 
 export default {
   name: "CalendarWeek",
@@ -141,8 +141,9 @@ export default {
       this.$router.push({ name: "calendar-day", params: { date } });
     },
     dispatchContents() {
+      const storageData = JSON.parse(localStorage.getItem('schedule'))
       this.days.forEach(day => {
-        day.content = dummyData.filter(item => item.date === day.date).length ? dummyData.filter(item => item.date === day.date)[0].contents : []
+        day.content = storageData.filter(item => item.date === day.date).length ? storageData.filter(item => item.date === day.date)[0].contents : []
       })
   },
   },
