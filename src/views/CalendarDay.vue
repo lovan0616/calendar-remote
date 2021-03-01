@@ -48,85 +48,6 @@ import Timeline from "../components/Timeline";
 import AddEvent from "../components/AddEvent";
 dayjs.extend(weekday);
 
-// const dummyData = [
-//   {
-//     date: "2021-02-23",
-//     contents: [
-//       {
-//         time: "7:00am",
-//         events: ["載姪子上課"]
-//       },
-//       {
-//         time: "9:00pm",
-//         events: ["standup meeting"]
-//       },
-//       {
-//         time: "2:00pm",
-//         events: ["打電話訂pizza"]
-//       },
-//       {
-//         time: "5:00pm",
-//         events: ["接姪子下課"]
-//       }
-//     ]
-//   },
-//   {
-//     date: "2021-02-24",
-//     contents: [
-//       {
-//         time: "4:00pm",
-//         events: ["繳信用卡費"]
-//       },
-//       {
-//         time: "7:00pm",
-//         events: ["買連假火車票"]
-//       }
-//     ]
-//   },
-//   {
-//     date: "2021-02-26",
-//     contents: [
-//       {
-//         time: "11:00pm",
-//         events: ["搶五月天演場會票"]
-//       },
-//       {
-//         time: "6:00am",
-//         events: ["morning meditation"]
-//       },
-//       {
-//         time: "12:00pm",
-//         events: ["買健身餐食材","和Ben吃午餐"]
-//       },
-//       {
-//         time: "2:00pm",
-//         events: ["和Emily確認製作預算"]
-//       },
-//       {
-//         time: "4:00pm",
-//         events: ["請Paul幫忙看風水"]
-//       }
-//     ]
-//   },
-//   {
-//     date: "2021-03-03",
-//     contents: [
-//       {
-//         time: "9:00pm",
-//         events: ["複習電商網站切版"]
-//       },
-//       {
-//         time: "9:00am",
-//         events: ["和Gigi吃早餐"]
-//       },
-//       {
-//         time: "12:00pm",
-//         events: ["打電話給Tim的醫生"]
-//       }
-//     ]
-//   }
-// ];
-
 export default {
   name: "CalendarDay",
   data() {
@@ -199,39 +120,62 @@ export default {
       this.fetchScheduleData();
     },
     handleAfterEditEvent(newEditItem, initialEditItem) {
-      const storageData = JSON.parse(localStorage.getItem('schedule'))
+      const storageData = JSON.parse(localStorage.getItem("schedule"));
       //未修改時間
-      if(newEditItem.time === initialEditItem.time) {
-       //找出對應的行程方塊物件，修改其行程名稱與顏色
-       storageData.find(data => data.date === this.date).contents.find(content => content.time === initialEditItem.time).events.find(item => item.event === initialEditItem.event).color = newEditItem.color 
+      if (newEditItem.time === initialEditItem.time) {
+        //找出對應的行程方塊物件，修改其行程名稱與顏色
+        storageData
+          .find(data => data.date === this.date)
+          .contents.find(content => content.time === initialEditItem.time)
+          .events.find(item => item.event === initialEditItem.event).color =
+          newEditItem.color;
 
-        storageData.find(data => data.date === this.date).contents.find(content => content.time === initialEditItem.time).events.find(item => item.event === initialEditItem.event).event = newEditItem.event 
+        storageData
+          .find(data => data.date === this.date)
+          .contents.find(content => content.time === initialEditItem.time)
+          .events.find(item => item.event === initialEditItem.event).event =
+          newEditItem.event;
 
-        localStorage.setItem('schedule', JSON.stringify(storageData))
+        localStorage.setItem("schedule", JSON.stringify(storageData));
       } else {
         //刪除該時間點上的行程方塊物件
-        storageData.find(data => data.date === this.date).contents.find(content => content.time === initialEditItem.time).events = storageData.find(data => data.date === this.date).contents.find(content => content.time === initialEditItem.time).events.filter(item => item.event !== initialEditItem.event)
+        storageData
+          .find(data => data.date === this.date)
+          .contents.find(
+            content => content.time === initialEditItem.time
+          ).events = storageData
+          .find(data => data.date === this.date)
+          .contents.find(content => content.time === initialEditItem.time)
+          .events.filter(item => item.event !== initialEditItem.event);
 
-        
         //在新的時間點上新增行程方塊物件
-        const timeObjectExist = storageData.find(data => data.date === this.date).contents.some(content => content.time === newEditItem.time)
+        const timeObjectExist = storageData
+          .find(data => data.date === this.date)
+          .contents.some(content => content.time === newEditItem.time);
 
-        if(timeObjectExist) {
-          storageData.find(data => data.date === this.date).contents.find(content => content.time === newEditItem.time).events.push({
-          event: newEditItem.event,
-          color: newEditItem.color
-        })
-        } else {
-          storageData.find(data => data.date === this.date).contents.push({
-            time: newEditItem.time,
-            events: [{
+        if (timeObjectExist) {
+          storageData
+            .find(data => data.date === this.date)
+            .contents.find(content => content.time === newEditItem.time)
+            .events.push({
               event: newEditItem.event,
               color: newEditItem.color
-            }]
-          })
+            });
+        } else {
+          storageData
+            .find(data => data.date === this.date)
+            .contents.push({
+              time: newEditItem.time,
+              events: [
+                {
+                  event: newEditItem.event,
+                  color: newEditItem.color
+                }
+              ]
+            });
         }
 
-        localStorage.setItem('schedule', JSON.stringify(storageData))
+        localStorage.setItem("schedule", JSON.stringify(storageData));
       }
 
       this.fetchScheduleData();
@@ -318,51 +262,45 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .header {
   width: 100%;
   height: 120px;
   box-shadow: 0px 3px 5px 0.1px rgba(0, 0, 0, 0.1);
   position: fixed;
   z-index: 1000000;
-  background-color: white;
-}
+  background-color: $bg_color;
+  color: $font_color;
 
-.view {
-  background-color: #d9d5ee;
-  color: #7d71b9;
-  border-radius: 20px;
-  padding: 10px;
-}
+  .calendar-icon-wrapper {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #dedaf4;
+    color: #7f74b6;
+  }
 
-.week-list-wrapper {
-  height: 50px;
-}
+  .week-list-wrapper {
+    height: 50px;
 
-.week-list ol {
-  height: 100%;
-}
-
-.week-list li {
-  width: 100%;
-  border-radius: 5px;
-  text-align: center;
-}
-
-.week-list li:not(.is-selected-day):hover {
-  background-color: #d9d5ee;
-}
-
-.calendar-icon-wrapper {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: #dedaf4;
-  color: #7f74b6;
-}
-
-.is-selected-day {
-  background-color: #7f74b5;
-  color: #ffffff;
+    .week-list {
+      ol {
+        height: 100%;
+      }
+      li {
+        width: 100%;
+        border-radius: 5px;
+        text-align: center;
+        &:not(.is-selected-day):hover {
+          background-color: $theme_color;
+          filter:saturate(60%);
+        }
+        &.is-selected-day {
+          background-color: $theme_color;
+          color: $font_color;
+        }
+      }
+    }
+  }
 }
 </style>

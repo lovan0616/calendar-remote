@@ -33,12 +33,10 @@
               <option v-for="time in times" :key="time" :value="time">{{ time }}</option>
             </select>
             <label class="color-title-label">選擇顏色</label>
-            <label for="grey" class="color-label">灰色</label>
-            <input type="radio" name="color" id="grey" value="grey" v-model="color" />
-            <label for="violet" class="color-label">紫色</label>
-            <input type="radio" name="color" id="violet" value="violet" v-model="color" />
-            <label for="red" class="color-label">紅色</label>
-            <input type="radio" name="color" id="red" value="red" v-model="color" />
+            <div class="color-options-wrapper" v-for="colorOp in colors" :key="colorOp">
+              <label :for="colorOp.name" class="color-label">{{ colorOp.name_ch }}</label>
+              <input type="radio" name="color" :id="colorOp.name" :value="colorOp.name" v-model="color" />
+            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
@@ -86,7 +84,8 @@ export default {
         "10:00pm",
         "11:00pm",
         "0:00pm"
-      ]
+      ],
+      colors: [{name: 'pink', name_ch: '粉'}, {name: 'green', name_ch: '綠'}, {name: 'violet', name_ch: '紫'}]
     };
   },
   methods: {
@@ -109,14 +108,18 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .add-event {
+  width: 70vw;
+  height: 60px;
+  font-size: 1.6rem;
+  max-width: 300px;
   position: fixed;
   bottom: 15px;
   left: 50%;
   transform: translate(-50%, 0);
-  background-color: #7f74b5;
-  color: #ffffff;
+  background: linear-gradient(45deg,$btn_color_start, $btn_color_start, $btn_color_middle, $btn_color_end);
+  color: $font_color;
   box-shadow: 1px 1px 8px 0.2px rgba(0, 0, 0, 0.3);
 }
 </style>

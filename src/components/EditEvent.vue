@@ -24,12 +24,16 @@
               <option v-for="time in times" :key="time" :value="time">{{ time }}</option>
             </select>
             <label class="color-title-label">選擇顏色</label>
-            <label for="grey" class="color-label">灰色</label>
-            <input type="radio" name="color" id="grey" value="grey" v-model="newEditItem.color" />
-            <label for="violet" class="color-label">紫色</label>
-            <input type="radio" name="color" id="violet" value="violet" v-model="newEditItem.color" />
-            <label for="red" class="color-label">紅色</label>
-            <input type="radio" name="color" id="red" value="red" v-model="newEditItem.color" />
+            <div class="color-options-wrapper" v-for="colorOp in colors" :key="colorOp">
+              <label :for="colorOp.name" class="color-label">{{ colorOp.name_ch }}</label>
+              <input
+                type="radio"
+                name="color"
+                :id="colorOp.name"
+                :value="colorOp.name"
+                v-model="newEditItem.color"
+              />
+            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-danger mr-auto">刪除</button>
@@ -48,10 +52,10 @@
 </template>
 
 <script>
-import $ from 'jquery'
-import { Toast } from '../utils/helpers'
+import $ from "jquery";
+import { Toast } from "../utils/helpers";
 export default {
-  name: 'EditItem',
+  name: "EditItem",
   props: {
     initialEditItem: {
       type: Object,
@@ -90,7 +94,8 @@ export default {
         "10:00pm",
         "11:00pm",
         "0:00pm"
-      ]
+      ],
+      colors: [{name: 'pink', name_ch: '粉'}, {name: 'green', name_ch: '綠'}, {name: 'violet', name_ch: '紫'}]
     };
   },
   watch: {
@@ -98,23 +103,27 @@ export default {
       this.newEditItem = {
         ...this.newEditItem,
         ...newValue
-      }
+      };
     }
   },
   methods: {
     handleSubmit() {
-      if (!this.newEditItem.time || !this.newEditItem.event.trim() || !this.newEditItem.color) {
+      if (
+        !this.newEditItem.time ||
+        !this.newEditItem.event.trim() ||
+        !this.newEditItem.color
+      ) {
         Toast.fire({
           icon: "warning",
           title: "請填寫所有項目"
         });
         return;
       }
-      
-      this.$emit('after-edit-event', this.newEditItem, this.initialEditItem)
 
-      $('#editEventSheet').modal('hide')
+      this.$emit("after-edit-event", this.newEditItem, this.initialEditItem);
+
+      $("#editEventSheet").modal("hide");
     }
   }
-}
+};
 </script>

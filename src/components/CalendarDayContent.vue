@@ -9,19 +9,19 @@
           :class="item.color"
           @click.stop="fillEditEventData(schedule, item)"
         >
+          <div class="color-ball" :class="item.color"></div>
           <p>{{ item.event }}</p>
         </div>
       </div>
     </div>
 
-    <EditEvent :initial-edit-item="editItem" v-on="$listeners"/>
-    
+    <EditEvent :initial-edit-item="editItem" v-on="$listeners" />
   </div>
 </template>
 
 <script>
-import EditEvent from '../components/EditEvent'
-import $ from 'jquery'
+import EditEvent from "../components/EditEvent";
+import $ from "jquery";
 
 export default {
   name: "CalendarDayContent",
@@ -82,14 +82,14 @@ export default {
     },
     fillEditEventData(schedule, item) {
       // 使用jq uery手動開啟modal：解決和v-on互斥的問題
-      $('#editEventSheet').modal('show')
+      $("#editEventSheet").modal("show");
 
       this.editItem = {
         ...this.editItem,
         time: schedule.time,
         event: item.event,
         color: item.color
-      }
+      };
     }
   },
   created() {
@@ -103,42 +103,47 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .calendar-day-content {
   width: 100%;
   padding-top: 120px;
   background-color: #fafafa;
+
+  .sheet {
+    height: 60px;
+    border: 1px solid #c4c4c4;
+    background-color: $sheet_color;
+
+    .schedule-item {
+      height: 100%;
+      border-radius: 10px;
+      padding: 10px;
+      position: relative;
+      background-color: $item_color;
+      color: $font_color;
+      cursor: pointer;
+      &:active {
+        filter: brightness(0.7);
+      }
+      .color-ball {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        &.pink {
+          background-color: $color_choice_1;
+        }
+        &.green {
+          background-color: $color_choice_2;
+        }
+        &.violet {
+          background-color: $color_choice_3;
+        }
+      }
+    }
+  }
 }
 
-.sheet {
-  height: 60px;
-  border: 1px solid #c4c4c4;
-}
-
-.sheet:hover {
-  background-color: #f6f6f6;
-}
-
-.schedule-item {
-  height: 100%;
-  border-radius: 10px;
-  padding: 10px;
-  cursor: pointer;
-}
-
-.schedule-item:active {
-  filter: brightness(0.7);
-}
-
-.schedule-item.grey {
-  background-color: #e5e5e5;
-}
-
-.schedule-item.violet {
-  background-color: violet;
-}
-
-.schedule-item.red {
-  background-color: red;
-}
 </style>
