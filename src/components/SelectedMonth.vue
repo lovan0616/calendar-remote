@@ -25,5 +25,6 @@ export default {
 .selected-month-wrapper {
   margin: 15px 0px 10px 0px ;
   text-align: center;
+  font-size: larger;
 }
 </style>
