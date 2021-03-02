@@ -38,7 +38,7 @@ import dayjs from "dayjs";
 import weekday from "dayjs/plugin/weekday";
 import ViewSelector from "../components/VIewSelector";
 import CalendarDayContent from "../components/CalendarDayContent";
-import Timeline from "../components/Timeline"
+import Timeline from "../components/Timeline";
 dayjs.extend(weekday);
 
 export default {
@@ -62,14 +62,16 @@ export default {
       this.$router.push({ name: "calendar-day", params: { date } });
     },
     dispatchContents() {
-      const storageData = JSON.parse(localStorage.getItem('schedule'))
+      const storageData = JSON.parse(localStorage.getItem("schedule"));
       this.days.forEach(day => {
-        day.content = storageData.filter(item => item.date === day.date).length ? storageData.filter(item => item.date === day.date)[0].contents : []
-      })
-  },
+        day.content = storageData.filter(item => item.date === day.date).length
+          ? storageData.filter(item => item.date === day.date)[0].contents
+          : [];
+      });
+    }
   },
   created() {
-    this.dispatchContents()
+    this.dispatchContents();
   },
   computed: {
     thisWeekPreviousDay() {
@@ -125,7 +127,7 @@ export default {
       return dayjs(date).format("DD");
     },
     weekDayFormat(date) {
-      switch(dayjs(date).format('ddd')) {
+      switch (dayjs(date).format("ddd")) {
         case "Sun":
           return "S";
         case "Mon":
@@ -146,56 +148,51 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .header {
   width: 100%;
   height: 120px;
   box-shadow: 0px 3px 5px 0.1px rgba(0, 0, 0, 0.1);
   position: fixed;
   z-index: 1000000;
-  background-color: white;
-}
+  background: linear-gradient(45deg, $bg_color_start, $bg_color_middle, $bg_color_end, $bg_color_end);
 
-.selector h1 {
-  font-size: larger;
-}
+  .selector h1 {
+    font-size: larger;
+  }
 
-.view {
-  background-color: #d9d5ee;
-  color: #7d71b9;
-  border-radius: 20px;
-  padding: 10px;
-}
+  .week-list-wrapper {
+    height: 50px;
 
-.week-list-wrapper {
-  height: 50px;
-}
+    .week-list ol {
+      height: 100%;
 
-.week-list ol {
-  height: 100%;
-}
+      li {
+        width: 100%;
+        border-radius: 5px;
+        text-align: center;
 
-.week-list li {
-  width: 100%;
-  border-radius: 5px;
-  text-align: center;
-}
+        &:not(.is-selected-day):hover {
+          background-color: $theme_color;
+          filter:saturate(60%);
+        }
+        &.is-selected-day {
+          background-color: transparent;
+          color: $theme_color;
+          @include box-shadow
+        }
+      }
+    }
 
-.week-list li:not(.is-selected-day):hover {
-  background-color: #d9d5ee;
-}
-
-.calendar-icon-wrapper {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: #dedaf4;
-  color: #7f74b6;
-}
-
-.is-selected-day {
-  background-color: #7f74b5;
-  color: #ffffff;
+    .calendar-icon-wrapper {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: $item_color;
+      color: $theme_color;
+      @include box-shadow;
+    }
+  }
 }
 
 .week-content {

@@ -111,7 +111,7 @@ export default {
 
   .sheet {
     height: 60px;
-    border: 1px solid #c4c4c4;
+    border: $sheet_border_size solid $sheet_border_color;
     background-color: $sheet_color;
 
     .schedule-item {
@@ -120,7 +120,8 @@ export default {
       padding: 10px;
       position: relative;
       background-color: $item_color;
-      color: $font_color;
+      color: $font_dark;
+      @include box-shadow;
       cursor: pointer;
       &:active {
         filter: brightness(0.7);

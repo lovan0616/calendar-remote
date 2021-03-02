@@ -13,7 +13,9 @@
       name: 'calendar-day',
       params: {date: day.date}
     }">
-        <div class="date-item"><p>{{ day.date | dayFormat() }}</p></div>
+        <div class="date-item">
+          <p>{{ day.date | dayFormat() }}</p>
+        </div>
       </router-link>
     </li>
   </ol>
@@ -129,20 +131,24 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 a {
   width: 100%;
   color: inherit;
   text-decoration: none;
 }
 
-.calendar-day {
-  list-style: none;
-  width: calc(100% / 7);
-  text-align: center;
-  padding: 10px 0px 10px 0px;
-  color: #838383;
+ol {
+  @include box-shadow;
 }
+
+.calendar-day {
+    list-style: none;
+    width: calc(100% / 7);
+    text-align: center;
+    padding: 10px 0px 10px 0px;
+    color: #838383;
+  }
 
 .calendar-day--not-current {
   color: #d3d3d3;
@@ -150,7 +156,7 @@ a {
 
 .date-item:hover {
   border-radius: 50%;
-  background-color: #7f75b2;
-  color: #ffffff;
+  background-color: $theme_color;
+  color: $font_light;
 }
 </style>

@@ -52,9 +52,9 @@ export default {
   .timeline {
     width: 80px;
     height: 60px;
-    border: 1px solid #c4c4c4;
-    background-color: $sheet_color;
-    color: $font_color;
+    border: $sheet_border_size solid $sheet_border_color;
+    background-color: $timeline_color;
+    color: $font_dark;
   }
 }
 </style>

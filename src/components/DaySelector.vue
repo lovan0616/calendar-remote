@@ -10,7 +10,7 @@
 import dayjs from 'dayjs'
 
 export default {
-  name: 'CalendarDateSelector',
+  name: 'CalendarDaySelector',
   props: {
     initalDate: {
       type: String,
@@ -38,6 +38,7 @@ export default {
 <style scoped>
 .day-selector {
   width: 160px;
+  cursor: pointer;
 }
 .day-selector div{
   width: 15px;

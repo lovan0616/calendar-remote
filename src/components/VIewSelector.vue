@@ -43,31 +43,31 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .view-selector {
   width: 5vw;
   min-width: 85px;
   position: relative;
-  background-color: #dedaf4;
+  background-color: $item_color;
+  @include box-shadow;
   border-radius: 20px;
-  margin-left: auto ;
-}
-
-.view-selector::after {
-  content: "\25BE";
-  position: absolute;
-  top: 50%;
-  right: 8px;
-  transform: translate(0, -50%);
-  color: #7f74b5;
-}
-select {
-  -webkit-appearance: none;
-  cursor: pointer;
-  border:none;
-  background-color: #dedaf4;
-  border-radius: 20px;
-  padding: 10px;
-  color: #7f74b5;
+  margin-left: auto;
+  &::after {
+    content: "\25BE";
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translate(0, -50%);
+    color: $theme_color;
+  }
+  select {
+    -webkit-appearance: none;
+    cursor: pointer;
+    border: none;
+    background-color: $item_color;
+    border-radius: 20px;
+    padding: 10px;
+    color: $theme_color;
+  }
 }
 </style>

@@ -269,15 +269,16 @@ export default {
   box-shadow: 0px 3px 5px 0.1px rgba(0, 0, 0, 0.1);
   position: fixed;
   z-index: 1000000;
-  background-color: $bg_color;
-  color: $font_color;
+  background: linear-gradient(45deg, $bg_color_start, $bg_color_middle, $bg_color_end, $bg_color_end);
+  color: $font_dark;
 
   .calendar-icon-wrapper {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background-color: #dedaf4;
-    color: #7f74b6;
+    background-color: $item_color;
+    color: $theme_color;
+    
   }
 
   .week-list-wrapper {
@@ -296,8 +297,9 @@ export default {
           filter:saturate(60%);
         }
         &.is-selected-day {
-          background-color: $theme_color;
-          color: $font_color;
+          background-color: transparent;
+          color: $theme_color;
+          @include box-shadow
         }
       }
     }

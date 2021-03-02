@@ -1,12 +1,21 @@
 // color variables
-$theme_color: #f47814;
-$bg_color: #000000;
-$font_color: #ffffff;
-$sheet_color: #1b1e27;
-$item_color: #2b2f3b;
+$theme_color: #ff3366;
+$bg_color_start: #f1eef9;
+$bg_color_middle: #f6f3fa;
+$bg_color_end: #f8f7fa;
+$bg_color_2: #fdfdfd;
+$font_light: #ffffff;
+$font_dark: #000000;
+$sheet_color: #f8f7fa;
+$timeline_color: #f6f3fa;
+$sheet_border_color: #e4e5e9;
+$item_color: #ffffff;
 $color_choice_1:#eaa5a4;
 $color_choice_2:#a7e0d1;
 $color_choice_3: #8f8cd1;
 $btn_color_start: #fa7f17;
 $btn_color_middle: #e3650f;
-$btn_color_end: #ce3d02
+$btn_color_end: #ce3d02;
+
+//size variables
+$sheet_border_size: 1px;

@@ -118,8 +118,8 @@ export default {
   bottom: 15px;
   left: 50%;
   transform: translate(-50%, 0);
-  background: linear-gradient(45deg,$btn_color_start, $btn_color_start, $btn_color_middle, $btn_color_end);
-  color: $font_color;
+  background-color: $theme_color;
+  color: $font_light;
   box-shadow: 1px 1px 8px 0.2px rgba(0, 0, 0, 0.3);
 }
 </style>
