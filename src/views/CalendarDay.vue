@@ -29,7 +29,7 @@
       </div>
     </div>
 
-    <div class="row d-flex flex-nowrap">
+    <div class="d-flex flex-nowrap">
       <Timeline />
       <CalendarDayContent
         :initial-schedule-data="scheduleData"
