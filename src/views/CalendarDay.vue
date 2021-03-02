@@ -6,9 +6,12 @@
         <ViewSelector />
       </div>
       <div class="week-list-wrapper d-flex">
-        <div class="calendar-icon-wrapper d-flex justify-content-center align-items-center mt-1">
+        <div style="width: 80px;">
+          <div class="calendar-icon-wrapper d-flex justify-content-center align-items-center mt-1">
           <font-awesome-icon :icon="['far', 'calendar']" />
         </div>
+        </div>
+        
         <div class="week-list flex-grow-1">
           <ol class="d-flex justify-content-around">
             <li
@@ -278,6 +281,7 @@ export default {
     border-radius: 50%;
     background-color: $item_color;
     color: $theme_color;
+    @include box-shadow;
     
   }
 
@@ -293,8 +297,7 @@ export default {
         border-radius: 5px;
         text-align: center;
         &:not(.is-selected-day):hover {
-          background-color: $theme_color;
-          filter:saturate(60%);
+          @include box-shadow
         }
         &.is-selected-day {
           background-color: transparent;

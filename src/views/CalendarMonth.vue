@@ -5,15 +5,6 @@
         <div class="calendar-icon-wrapper d-flex justify-content-center align-items-center">
           <font-awesome-icon :icon="['far', 'calendar']" />
         </div>
-
-        <!-- <CalendarDateSelector
-        :current-date="today"
-        :selected-date="selectedDate"
-        @dateSelected="selectDate"
-        />-->
-        <div class="close-icon-wrapper ml-auto">
-          <font-awesome-icon :icon="['fas', 'times']" size="2x" />
-        </div>
       </div>
 
       <CalendarWeekdays />
