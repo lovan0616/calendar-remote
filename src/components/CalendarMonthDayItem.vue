@@ -140,6 +140,7 @@ a {
 
 ol {
   @include box-shadow;
+  margin-bottom: 25px;
 }
 
 .calendar-day {
