@@ -95,7 +95,6 @@ export default {
           contents: [{ time, events: [{ event, color }] }]
         });
         localStorage.setItem("schedule", JSON.stringify(storageData));
-        console.log("no date");
       } else {
         const isSelectedDayContentTimeExist = storageData
           .find(item => item.date === this.date)
@@ -108,7 +107,6 @@ export default {
               events: [{ event, color }]
             });
           localStorage.setItem("schedule", JSON.stringify(storageData));
-          console.log("have date, no time");
         } else {
           storageData
             .find(item => item.date === this.date)
@@ -118,7 +116,6 @@ export default {
               color
             });
           localStorage.setItem("schedule", JSON.stringify(storageData));
-          console.log("have date, have time");
         }
       }
       this.fetchScheduleData();
@@ -200,7 +197,6 @@ export default {
         .contents.find(content => content.time === initialEditItem.time).events.length;
       // 若所屬的時間物件中已經沒有任何行程方塊物件，則刪除該筆時間物件
       if (!leftEventCount) {
-        console.log("wow");
         storageData.find(data => data.date === this.date)
         .contents = storageData.find(data => data.date === this.date)
         .contents.filter(content => content.time !== initialEditItem.time)
@@ -210,7 +206,6 @@ export default {
         .contents.length;
     // 若所屬的日期物件中已經沒有任何contents(所有時間都無行程)，則刪除該筆日期物件
     if (!leftTimeCount) {
-      console.log('hey')
       storageData = storageData.filter(data => data.date !== this.date)
     }
 
@@ -223,7 +218,6 @@ export default {
   },
   watch: {
     date() {
-      console.log("change");
       this.fetchScheduleData();
     }
   },
