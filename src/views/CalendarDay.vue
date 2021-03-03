@@ -8,10 +8,10 @@
       <div class="week-list-wrapper d-flex">
         <div style="width: 80px;">
           <div class="calendar-icon-wrapper d-flex justify-content-center align-items-center mt-1">
-          <font-awesome-icon :icon="['far', 'calendar']" />
+            <font-awesome-icon :icon="['far', 'calendar']" />
+          </div>
         </div>
-        </div>
-        
+
         <div class="week-list flex-grow-1">
           <ol class="d-flex justify-content-around">
             <li
@@ -34,6 +34,7 @@
       <CalendarDayContent
         :initial-schedule-data="scheduleData"
         @after-edit-event="handleAfterEditEvent"
+        @after-delete-event="handleAfterDeleteEvent"
       />
     </div>
 
@@ -182,6 +183,39 @@ export default {
       }
 
       this.fetchScheduleData();
+    },
+    handleAfterDeleteEvent(initialEditItem) {
+      let storageData = JSON.parse(localStorage.getItem("schedule"));
+      // 刪除該筆行程方塊物件
+      storageData
+        .find(data => data.date === this.date)
+        .contents.find(
+          content => content.time === initialEditItem.time
+        ).events = storageData
+        .find(data => data.date === this.date)
+        .contents.find(content => content.time === initialEditItem.time)
+        .events.filter(item => item.event !== initialEditItem.event);
+
+      const leftEventCount = storageData.find(data => data.date === this.date)
+        .contents.find(content => content.time === initialEditItem.time).events.length;
+      // 若所屬的時間物件中已經沒有任何行程方塊物件，則刪除該筆時間物件
+      if (!leftEventCount) {
+        console.log("wow");
+        storageData.find(data => data.date === this.date)
+        .contents = storageData.find(data => data.date === this.date)
+        .contents.filter(content => content.time !== initialEditItem.time)
+      }
+
+      const leftTimeCount = storageData.find(data => data.date === this.date)
+        .contents.length;
+    // 若所屬的日期物件中已經沒有任何contents(所有時間都無行程)，則刪除該筆日期物件
+    if (!leftTimeCount) {
+      console.log('hey')
+      storageData = storageData.filter(data => data.date !== this.date)
+    }
+
+      localStorage.setItem("schedule", JSON.stringify(storageData));
+      this.fetchScheduleData();
     }
   },
   created() {
@@ -272,7 +306,13 @@ export default {
   box-shadow: 0px 3px 5px 0.1px rgba(0, 0, 0, 0.1);
   position: fixed;
   z-index: 1000000;
-  background: linear-gradient(45deg, $bg_color_start, $bg_color_middle, $bg_color_end, $bg_color_end);
+  background: linear-gradient(
+    45deg,
+    $bg_color_start,
+    $bg_color_middle,
+    $bg_color_end,
+    $bg_color_end
+  );
   color: $font_dark;
 
   .calendar-icon-wrapper {
@@ -282,7 +322,6 @@ export default {
     background-color: $item_color;
     color: $theme_color;
     @include box-shadow;
-    
   }
 
   .week-list-wrapper {
@@ -297,12 +336,12 @@ export default {
         border-radius: 5px;
         text-align: center;
         &:not(.is-selected-day):hover {
-          @include box-shadow
+          @include box-shadow;
         }
         &.is-selected-day {
           background-color: transparent;
           color: $theme_color;
-          @include box-shadow
+          @include box-shadow;
         }
       }
     }

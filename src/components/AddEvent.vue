@@ -41,7 +41,7 @@
               <div
                 class="color-options-wrapper form-check form-check-inline"
                 v-for="colorOp in colors"
-                :key="colorOp"
+                :key="colorOp.name"
               >
                 <label :for="colorOp.name" class="color-label pr-1">{{ colorOp.name_ch }}</label>
                 <input

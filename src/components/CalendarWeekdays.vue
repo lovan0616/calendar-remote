@@ -1,6 +1,6 @@
 <template>
   <ol class="day-of-week mb-2">
-    <li v-for="weekday in weekdays" :key="weekday">
+    <li v-for="(weekday, index) in weekdays" :key="index">
       {{ weekday }}
     </li>
   </ol>
