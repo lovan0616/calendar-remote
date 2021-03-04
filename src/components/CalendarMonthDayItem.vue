@@ -7,7 +7,7 @@
       :class="{
       'calendar-day--not-current':!day.isCurrentMonth,
       'calendar-day-today':isToday,
-      'have-event':haveEventDate.some(date => date === day.date)
+      'have-event':haveEventDate(day)
     }"
     >
       <router-link :to="{
@@ -122,17 +122,22 @@ export default {
         ...this.currentMonthDays,
         ...this.nextMonthDays
       ];
-    },
-    haveEventDate() {
-      const storageData = JSON.parse(localStorage.getItem("schedule"));
-      return storageData.map(item => {
-        return item.date;
-      });
     }
   },
   methods: {
     getWeekday(date) {
       return dayjs(date).weekday();
+    },
+    haveEventDate(day) {
+      const storageData = JSON.parse(localStorage.getItem("schedule"));
+      if (!storageData || !storageData.length) {
+        return false;
+      } else {
+        const dateArray = storageData.map(item => {
+          return item.date;
+        });
+        return dateArray.some(date => date === day.date)
+      }
     }
   }
 };
